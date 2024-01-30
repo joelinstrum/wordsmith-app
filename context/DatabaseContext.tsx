@@ -1,6 +1,6 @@
 // DatabaseContext.tsx
 import useDb from "hooks/useDb";
-import React, { ReactNode, createContext, useContext, useEffect } from "react";
+import React, { ReactNode, createContext, useContext } from "react";
 
 interface DatabaseProviderProps {
   children: ReactNode;
@@ -16,10 +16,6 @@ export const DatabaseProvider: React.FC<DatabaseProviderProps> = ({
   children,
 }) => {
   const { db, initDb } = useDb();
-
-  useEffect(() => {
-    console.log(db);
-  }, [db]);
 
   return (
     <>

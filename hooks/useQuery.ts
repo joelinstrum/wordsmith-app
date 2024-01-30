@@ -1,6 +1,5 @@
 import { useDatabase } from "context/DatabaseContext";
 import * as SQLite from "expo-sqlite";
-import { useEffect } from "react";
 
 export type SuccessCallback = (resultArray: any[]) => void;
 export type ErrorCallback = (error: any) => void;
@@ -9,49 +8,40 @@ type SQLiteDatabase = SQLite.WebSQLDatabase;
 const useQuery = () => {
   const { db, initDb } = useDatabase();
 
-  useEffect(() => {
-    console.log("Use effect has been called");
-    if (db) {
-      console.log("DB is now registered");
-    }
-  }, [db, initDb]); // Include db and initDb in the dependency array
+  const query = (sqlQuery: string, params: any[]): Promise<any[]> => {
+    return new Promise(async (resolve, reject) => {
+      if (!db) {
+        console.warn("No db, returning");
+        reject("No database available");
+        return;
+      }
 
-  const query = async (
-    sqlQuery: string,
-    params: any[],
-    successCallback: SuccessCallback,
-    errorCallback?: ErrorCallback
-  ) => {
-    console.log("Query has been called");
-    if (!db) {
-      return;
-    }
-    let openedDb: SQLiteDatabase = db;
-    if (!openedDb) {
-      openedDb = (await initDb()) as SQLiteDatabase;
-    }
-
-    try {
-      openedDb.transaction((tx) => {
-        tx.executeSql(
-          sqlQuery,
-          params,
-          (_, resultSet) => {
-            console.log("ROWS: ", resultSet.rows._array.length);
-            successCallback(resultSet.rows._array);
-          },
-          (_, error) => {
-            console.log(error);
-            if (errorCallback) {
-              errorCallback(error);
+      let openedDb: SQLiteDatabase = db;
+      openedDb.transaction(
+        (tx) => {
+          tx.executeSql(
+            sqlQuery,
+            params,
+            (_, resultSet) => {
+              resolve(resultSet.rows._array);
+              return true;
+            },
+            (_, error) => {
+              console.error(error);
+              reject(error);
+              return true;
             }
-            return true;
-          }
-        );
-      });
-    } catch (e) {
-      console.warn(e);
-    }
+          );
+        },
+        (transactionError) => {
+          console.error("Transaction error:", transactionError);
+          reject(transactionError);
+        },
+        () => {
+          // Transaction successful
+        }
+      );
+    });
   };
 
   return query;

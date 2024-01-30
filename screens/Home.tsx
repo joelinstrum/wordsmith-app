@@ -1,9 +1,20 @@
-import { Logo, Menu, Separator } from "components";
+import { Loader, Logo, Menu, Separator } from "components";
 import { useTheme } from "context/ThemeContext";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import { pause } from "utils/utilities";
 
 const Home: React.FC = () => {
   const theme = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const setLoader = async () => {
+      await pause(2);
+      setIsLoading(false);
+    };
+    setLoader();
+  }, []);
   return (
     <>
       <View style={theme.container.screen}>
@@ -16,7 +27,7 @@ const Home: React.FC = () => {
           </Text>
         </View>
         <Separator height={50} />
-        <Menu />
+        {isLoading ? <Loader isLoading={isLoading} /> : <Menu />}
       </View>
     </>
   );

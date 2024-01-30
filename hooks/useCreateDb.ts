@@ -13,20 +13,10 @@ const useCreateDb = () => {
             category TEXT,
             dateAdded DATE,
             meaning TEXT,
+            usage TEXT,
             etymology TEXT
           );`;
-      await query(
-        sql,
-        [],
-        (result) => {
-          if (result.length) {
-            console.log("Table created");
-          }
-        },
-        () => {
-          console.log("Error creating table");
-        }
-      );
+      await query(sql, []);
     } catch (error) {
       console.error("Error creating table:", error);
     }
@@ -42,48 +32,33 @@ const useCreateDb = () => {
 
       // Check if the table exists
       const sql = "SELECT name FROM sqlite_master WHERE type=? AND name=?";
-      await query(sql, ["table", "dictionary"], (rows) => {
-        if (rows.length) {
-          createTable();
-        }
-      });
+      await query(sql, ["table", "dictionary"]);
 
       // Check if force is true and delete existing records
       if (force) {
         const sql = "DELETE FROM dictionary;";
-        await query(sql, [], () => {
-          return true;
-        });
+        await query(sql, []);
       } else {
         // If force is false and there are existing records, return
         const sql = "SELECT COUNT(*) as count FROM dictionary";
-        await query(sql, [], (result) => {
-          if (result) {
-            console.log(result);
-            console.log("Table already populated, skipping.");
-            doInsertData = false;
-          } else {
-            doInsertData = true;
-          }
-        });
+        const rows = await query(sql, []);
+        if (rows) {
+          doInsertData = false;
+        }
       }
 
       if (doInsertData) {
-        console.log("Insert the data...");
         for (const item of jsonData) {
           const sql =
-            "INSERT INTO dictionary (word, category, dateAdded, meaning, etymology) VALUES (?, ?, ?, ?, ?);";
-          await query(
-            sql,
-            [
-              item.word,
-              item.category,
-              item.dateAdded,
-              item.meaning,
-              item.etymology,
-            ],
-            () => {}
-          );
+            "INSERT INTO dictionary (word, category, dateAdded, meaning, usage, etymology) VALUES (?, ?, ?, ?, ?, ?);";
+          await query(sql, [
+            item.word,
+            item.category,
+            item.dateAdded,
+            item.meaning,
+            item.usage,
+            item.etymology,
+          ]);
         }
         console.log("Table populated successfully");
       }

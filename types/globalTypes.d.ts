@@ -45,5 +45,7 @@ declare interface IDictionary {
   word: string;
   category: string;
   meaning: string;
+  usage: string;
   etymology: string;
+  [key: string]: string | number;
 }

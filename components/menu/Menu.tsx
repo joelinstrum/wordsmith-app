@@ -9,13 +9,9 @@ const Menu = () => {
   const [abcIcon] = useState(require("assets/images/abc.png"));
   const [gearsIcon] = useState(require("assets/images/gears.png"));
   const theme = getTheme();
-
-  // Access the navigation object
   const navigation = useNavigation();
 
   const onClick = (key: string) => {
-    console.log("YOu clicked on ", key);
-    // Use the navigation object to navigate to the specified screen
     navigation.navigate(key as never);
   };
 

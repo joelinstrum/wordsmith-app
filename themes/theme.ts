@@ -24,14 +24,22 @@ const getTheme = <T extends ViewStyle>(
       card: {
         flex: 1,
       },
+      warn: {
+        minHeight: 200,
+        margin: 20,
+        borderColor: "gold",
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        backgroundColor: "#151515",
+        justifyContent: "center",
+        alignItems: "center",
+      },
       screen: {
         flex: 1,
         backgroundColor: themeFile.colors.primaryBackground,
         padding: 10,
         paddingTop: 50,
-        display: "absolute",
-        top: 0,
-        left: 0,
       },
       screenText: {
         fontSize: 16,
@@ -50,6 +58,17 @@ const getTheme = <T extends ViewStyle>(
         left: 5,
         zIndex: 100,
         backgroundColor: "rgba(0, 0, 0, .9)",
+      },
+      loader: {
+        backgroundColor: themeFile.colors.primaryBackground,
+        padding: 10,
+        display: "flex",
+        alignItems: "center",
+      },
+      loaderText: {
+        color: "#aaa",
+        fontSize: 20,
+        fontStyle: "italic",
       },
       modal: {
         display: "relative",
@@ -70,6 +89,12 @@ const getTheme = <T extends ViewStyle>(
         paddingHorizontal: 140,
         paddingVertical: 10,
         borderRadius: 30,
+      },
+      settings: {
+        backgroundColor: "#444",
+        color: "#efefef",
+        borderRadius: 10,
+        padding: 5,
       },
       menuText: {
         color: themeFile.colors.primaryText,
@@ -109,6 +134,19 @@ const getTheme = <T extends ViewStyle>(
         borderColor: "rgba(255, 255, 255, .35)",
         borderWidth: 2,
         borderRadius: 8,
+        backgroundColor: "#222",
+      },
+      defaultButtonPressed: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        alignContent: "center",
+        justifyContent: "center",
+        justifyItems: "center",
+        borderColor: "rgba(255, 255, 255, .35)",
+        borderWidth: 2,
+        borderRadius: 8,
+        backgroundColor: "#444",
       },
       menu: {
         display: "flex",

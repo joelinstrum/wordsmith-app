@@ -3,6 +3,7 @@ import { DatabaseProvider } from "context/DatabaseContext";
 import { ThemeProvider } from "context/ThemeContext";
 import React, { ReactNode } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
+import { AppDataProvider } from "./AppDataContext";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -18,7 +19,9 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <PaperProvider>
       <ThemeProvider>
-        <DatabaseProvider>{children}</DatabaseProvider>
+        <DatabaseProvider>
+          <AppDataProvider>{children}</AppDataProvider>
+        </DatabaseProvider>
       </ThemeProvider>
     </PaperProvider>
   );
