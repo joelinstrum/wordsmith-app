@@ -9,6 +9,7 @@ const useGetDictionary = () => {
   const [trigger, setTrigger] = useState<Number | undefined>();
   const [previousTrigger, setPreviousTrigger] = useState<Number | undefined>(0);
   const [dictionaryLoading, setDictionaryLoading] = useState(false);
+  const [hasDictionary, setHasDictionary] = useState(false);
   let sortDirection = "asc";
   let sortColumn = "word";
 
@@ -20,8 +21,11 @@ const useGetDictionary = () => {
       };
       doGetDictionary();
     }
-  }),
-    [trigger];
+  }, [trigger]);
+
+  useEffect(() => {
+    getHasDictionary();
+  }, []);
 
   useEffect(() => {
     if (dictionaryLoading) {
@@ -39,10 +43,37 @@ const useGetDictionary = () => {
       const data = await query(sql, []);
       setDictionary(data);
     } catch (e) {
-      console.log("ERROR: ", e);
+      setDictionary([]);
       setDictionaryLoading(false);
     }
     return;
+  };
+
+  const getHasDictionary = async () => {
+    const sql = `SELECT count(*) as count from dictionary `;
+    try {
+      const data = await query(sql, []);
+      if (data && data[0]?.count) {
+        setHasDictionary(true);
+      } else {
+        setHasDictionary(false);
+      }
+    } catch (e) {
+      setHasDictionary(false);
+    }
+  };
+
+  const updateField = async (
+    field: string,
+    value: string | number,
+    id: number
+  ) => {
+    const sql = `UPDATE dictionary SET ${field} = '${value}' WHERE id = ${id}`;
+    try {
+      await query(sql, []);
+    } catch (e) {
+      console.log("Error in the system");
+    }
   };
 
   const triggerDictionaryQuery = () => {
@@ -59,6 +90,8 @@ const useGetDictionary = () => {
     getDictionary,
     triggerDictionaryQuery,
     sort,
+    hasDictionary,
+    updateField,
   };
 };
 

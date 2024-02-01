@@ -35,10 +35,6 @@ const Settings: React.FC = () => {
     setWarning("This will completely remove your current data");
   };
 
-  const onCancelRepairDatabase = () => {
-    setWarning("");
-  };
-
   const onProceedRepairDb = () => {
     setWarning("");
   };
@@ -60,7 +56,7 @@ const Settings: React.FC = () => {
           {warning ? (
             <Warning
               message={warning}
-              onCancel={onCancelRepairDatabase}
+              onCancel={() => setWarning("")}
               onProceed={onProceedRepairDb}
             />
           ) : (

@@ -1,20 +1,26 @@
 import { Loader, Logo, Menu, Separator } from "components";
+import { useAppData } from "context/AppDataContext";
 import { useTheme } from "context/ThemeContext";
+import useReloadDictionary from "hooks/useReloadDictionary";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { pause } from "utils/utilities";
 
 const Home: React.FC = () => {
   const theme = useTheme();
+  const { hasInitialized, hasDictionary, dictionary } = useAppData();
   const [isLoading, setIsLoading] = useState(true);
+  const { reloadDictionary } = useReloadDictionary();
 
   useEffect(() => {
-    const setLoader = async () => {
-      await pause(2);
+    if (dictionary && dictionary.length) {
       setIsLoading(false);
-    };
-    setLoader();
-  }, []);
+    } else if (hasInitialized && hasDictionary) {
+      setIsLoading(false);
+    } else if (hasInitialized && !hasDictionary) {
+      // reloadDictionary();
+    }
+  }, [hasInitialized, hasDictionary, dictionary]);
+
   return (
     <>
       <View style={theme.container.screen}>

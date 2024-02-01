@@ -6,6 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
+    "permissions": [
+      "CAMERA_ROLL",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE"
+    ],
     "splash": {
       "resizeMode": "contain",
       "backgroundColor": "#222"
@@ -24,6 +29,9 @@
     },
     "web": {
       "favicon": "./assets/images/icon.png"
+    },
+    "resolver": {
+      "assetExts": ["db", "ttf", "png", "json", "jpeg", "jpg", "svg"]
     }
   }
 }

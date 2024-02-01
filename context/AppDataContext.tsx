@@ -1,3 +1,4 @@
+import useAppChecklist from "hooks/useAppChecklist";
 import useGetDictionary from "hooks/useGetDictionary";
 import React, { ReactNode, createContext, useContext } from "react";
 
@@ -6,6 +7,10 @@ interface AppData {
   dictionary: IDictionary[];
   getDictionary: () => void;
   setSortColumn: (column: string) => void;
+  hasVoiceSelected: boolean;
+  hasInitialized: boolean;
+  hasDictionary: boolean;
+  updateField: (field: string, value: string | number, id: number) => void;
 }
 
 interface AppDataContextProps {
@@ -25,8 +30,15 @@ export const useAppData = (): AppData => {
 export const AppDataProvider: React.FC<AppDataContextProps> = ({
   children,
 }) => {
-  const { dictionaryLoading, dictionary, triggerDictionaryQuery, sort } =
-    useGetDictionary();
+  const {
+    dictionaryLoading,
+    dictionary,
+    triggerDictionaryQuery,
+    sort,
+    updateField,
+  } = useGetDictionary();
+
+  const { hasVoiceSelected, hasInitialized, hasDictionary } = useAppChecklist();
 
   const getDictionary = () => {
     triggerDictionaryQuery();
@@ -41,6 +53,10 @@ export const AppDataProvider: React.FC<AppDataContextProps> = ({
     dictionary,
     getDictionary,
     setSortColumn,
+    hasVoiceSelected,
+    hasInitialized,
+    hasDictionary,
+    updateField,
   };
 
   return (

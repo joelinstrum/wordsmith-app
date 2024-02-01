@@ -27,14 +27,13 @@ const useQuery = () => {
               return true;
             },
             (_, error) => {
-              console.error(error);
               reject(error);
               return true;
             }
           );
         },
         (transactionError) => {
-          console.error("Transaction error:", transactionError);
+          console.log("Transaction error:", transactionError);
           reject(transactionError);
         },
         () => {

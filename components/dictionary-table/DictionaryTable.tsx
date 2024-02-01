@@ -4,13 +4,7 @@ import { useTheme } from "context/ThemeContext";
 import * as React from "react";
 import { useEffect } from "react";
 import { DataTable } from "react-native-paper";
-
-interface IDictionary {
-  id: number;
-  word: string;
-  category: string;
-  // Add other properties as needed
-}
+import DictionaryItem from "./DictionaryItem";
 
 interface Dictionary {
   dictionary: IDictionary[];
@@ -80,17 +74,7 @@ const DictionaryTable = () => {
           {dictionary
             .slice(from, to)
             .map((item: IDictionary, index: number, array: IDictionary[]) => (
-              <DataTable.Row key={item.id} style={theme.dataTable.row}>
-                <DataTable.Cell textStyle={theme.dataTable.rowText}>
-                  Add/remove
-                </DataTable.Cell>
-                <DataTable.Cell numeric textStyle={theme.dataTable.rowTextLink}>
-                  {item.word}
-                </DataTable.Cell>
-                <DataTable.Cell numeric textStyle={theme.dataTable.rowText}>
-                  {item.category}
-                </DataTable.Cell>
-              </DataTable.Row>
+              <DictionaryItem item={item} key={item.id} />
             ))}
 
           <DataTable.Pagination

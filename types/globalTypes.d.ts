@@ -47,5 +47,6 @@ declare interface IDictionary {
   meaning: string;
   usage: string;
   etymology: string;
+  isSelected: string;
   [key: string]: string | number;
 }
