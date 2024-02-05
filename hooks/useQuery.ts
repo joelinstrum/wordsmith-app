@@ -8,7 +8,7 @@ type SQLiteDatabase = SQLite.WebSQLDatabase;
 const useQuery = () => {
   const { db, initDb } = useDatabase();
 
-  const query = (sqlQuery: string, params: any[]): Promise<any[]> => {
+  const query = (sqlQuery: string, params: any[] = []): Promise<any[]> => {
     return new Promise(async (resolve, reject) => {
       if (!db) {
         console.warn("No db, returning");

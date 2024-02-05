@@ -7,19 +7,31 @@ import { Text, View } from "react-native";
 
 const Home: React.FC = () => {
   const theme = useTheme();
-  const { hasInitialized, hasDictionary, dictionary } = useAppData();
+  const {
+    hasInitialized,
+    hasDictionary,
+    dictionary,
+    getWordList,
+    getDictionary,
+  } = useAppData();
   const [isLoading, setIsLoading] = useState(true);
   const { reloadDictionary } = useReloadDictionary();
 
   useEffect(() => {
     if (dictionary && dictionary.length) {
       setIsLoading(false);
+      getWordList();
     } else if (hasInitialized && hasDictionary) {
       setIsLoading(false);
     } else if (hasInitialized && !hasDictionary) {
       // reloadDictionary();
     }
   }, [hasInitialized, hasDictionary, dictionary]);
+
+  useEffect(() => {
+    getDictionary();
+    console.log("load dictionary");
+  }, []);
 
   return (
     <>

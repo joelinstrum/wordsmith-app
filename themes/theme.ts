@@ -1,6 +1,7 @@
 import { ViewStyle } from "react-native";
 import { newShade } from "utils/utilities";
 import * as themes from "./";
+
 type TTheme = "light" | "dark";
 
 const getTheme = <T extends ViewStyle>(
@@ -21,8 +22,37 @@ const getTheme = <T extends ViewStyle>(
         marginLeft: 10,
         marginRight: 10,
       },
+      row: {
+        flexDirection: "row",
+      },
+      wordDrillRow: {
+        flexDirection: "row",
+        marginTop: 20,
+      },
+      col: {
+        flexDirection: "column",
+      },
       card: {
         flex: 1,
+      },
+      contentContainer: {
+        display: "flex",
+        flexBais: "content",
+      },
+      wordDrill: {
+        paddingTop: 10,
+        display: "flex",
+      },
+      wordDrillLabel: {
+        color: "#aaa",
+        fontSize: 16,
+        marginRight: 10,
+        width: 100,
+      },
+      wordDrillValue: {
+        color: "#fff",
+        fontSize: 16,
+        width: 250,
       },
       warn: {
         minHeight: 200,
@@ -95,6 +125,7 @@ const getTheme = <T extends ViewStyle>(
         color: "#efefef",
         borderRadius: 10,
         padding: 5,
+        marginRight: 10,
       },
       menuText: {
         color: themeFile.colors.primaryText,

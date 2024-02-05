@@ -38,7 +38,7 @@ const useGetDictionary = () => {
   }, [dictionaryLoading]);
 
   const getDictionary = async () => {
-    const sql = `SELECT * FROM dictionary ORDER BY ${sortColumn} ${sortDirection};`;
+    const sql = `SELECT * FROM dictionary ORDER BY isSelected DESC, ${sortColumn} ${sortDirection};`;
     try {
       const data = await query(sql, []);
       setDictionary(data);
@@ -70,7 +70,7 @@ const useGetDictionary = () => {
   ) => {
     const sql = `UPDATE dictionary SET ${field} = '${value}' WHERE id = ${id}`;
     try {
-      await query(sql, []);
+      return await query(sql);
     } catch (e) {
       console.log("Error in the system");
     }

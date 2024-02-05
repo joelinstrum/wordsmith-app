@@ -1,37 +1,40 @@
 import { useAppData } from "context/AppDataContext";
 import { useTheme } from "context/ThemeContext";
-import { useState } from "react";
 import { Checkbox, DataTable } from "react-native-paper";
 
 interface DictionaryItemProps {
   item: IDictionary;
+  onWordPress: (wordObject: IDictionary, index: number) => void;
+  index: number;
 }
 
-const DictionaryItem: React.FC<DictionaryItemProps> = ({ item }) => {
+const DictionaryItem: React.FC<DictionaryItemProps> = ({
+  item,
+  onWordPress,
+  index,
+}) => {
   const theme = useTheme();
-  const { updateField } = useAppData();
-
-  const [checked, setChecked] = useState(
-    item.isSelected.toUpperCase() === "TRUE"
-  );
+  const { wordList, updateWordList } = useAppData();
 
   const pressCheckbox = () => {
-    if (checked) {
-      updateField("isSelected", "FALSE", item.id);
-    } else {
-      updateField("isSelected", "TRUE", item.id);
-    }
+    updateWordList(item.word, item.id);
   };
 
   return (
     <DataTable.Row key={item.id} style={theme.dataTable.row}>
       <DataTable.Cell textStyle={theme.dataTable.rowText}>
         <Checkbox
-          status={checked ? "checked" : "unchecked"}
+          status={
+            wordList && wordList.includes(item.word) ? "checked" : "unchecked"
+          }
           onPress={pressCheckbox}
         />
       </DataTable.Cell>
-      <DataTable.Cell numeric textStyle={theme.dataTable.rowTextLink}>
+      <DataTable.Cell
+        numeric
+        textStyle={theme.dataTable.rowTextLink}
+        onPress={() => onWordPress(item, index)}
+      >
         {item.word}
       </DataTable.Cell>
       <DataTable.Cell numeric textStyle={theme.dataTable.rowText}>

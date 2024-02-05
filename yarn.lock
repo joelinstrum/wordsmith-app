@@ -3702,7 +3702,7 @@
     "react-helmet-async" "^1.3.0"
     "schema-utils" "^4.0.1"
 
-"expo-speech@11.7.0":
+"expo-speech@^11.7.0":
   "integrity" "sha512-D+57EqYgmmbceGyfQiCJGWj/FHIzaFOdzvUrz3EiqKTj3VqVCZZf0VvjmjpSh2q+5Ooh1M92l0mvMUbcsMgvPw=="
   "resolved" "https://registry.npmjs.org/expo-speech/-/expo-speech-11.7.0.tgz"
   "version" "11.7.0"

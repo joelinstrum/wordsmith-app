@@ -8,6 +8,7 @@ import Overlay from "./overlay/Overlay";
 import ScreenContainer from "./screen-container/ScreenContainer";
 import Separator from "./separator/Separator";
 import Warning from "./warning/Warning";
+import WordDrill from "./word-drill/WordDrill";
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   ScreenContainer,
   Separator,
   Warning,
+  WordDrill,
 };
