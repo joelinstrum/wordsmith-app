@@ -1,15 +1,21 @@
+import { useThemeContext } from "context/ThemeContext";
 import { useState } from "react";
 import { Image, View } from "react-native";
-import { containerStyles } from "../../styles";
 
 const Logo: React.FC = () => {
   const [imageUri] = useState(
     require("../../assets/images/white-logo-no-background.png")
   );
 
+  const { theme } = useThemeContext();
   return (
-    <View style={containerStyles.logo}>
-      {imageUri && <Image source={imageUri} />}
+    <View style={theme.container.logo}>
+      {imageUri && (
+        <Image
+          source={imageUri}
+          style={{ tintColor: theme.colors.logoColor }}
+        />
+      )}
     </View>
   );
 };

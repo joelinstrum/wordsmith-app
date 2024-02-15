@@ -1,4 +1,4 @@
-import { useTheme } from "context/ThemeContext";
+import { useThemeContext as useTheme } from "context/ThemeContext";
 import { ReactNode } from "react";
 import { Text, View } from "react-native";
 
@@ -7,7 +7,7 @@ interface OverlayProps {
 }
 
 const Overlay: React.FC<OverlayProps> = ({ children }) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   return (
     <View style={theme.container.modal}>
       <Text style={{ color: "white", fontSize: 24 }}>

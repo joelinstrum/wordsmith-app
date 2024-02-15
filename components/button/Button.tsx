@@ -1,12 +1,13 @@
+import { useThemeContext as useTheme } from "context/ThemeContext";
 import { ReactNode, useState } from "react";
 import { Image, Text, TouchableOpacity, View, ViewStyle } from "react-native";
-import getTheme from "themes/theme";
 import { pause } from "utils/utilities";
 
 interface IButton {
   title?: string;
   onPress?: (key: string) => void;
   style?: ViewStyle;
+  textStyle?: ViewStyle;
   icon?: any;
   iconPlacement?: "left" | "right" | "center";
   children?: ReactNode;
@@ -19,8 +20,9 @@ const Button: React.FC<IButton> = ({
   icon,
   iconPlacement = "left",
   children,
+  textStyle,
 }) => {
-  const theme = getTheme();
+  const { theme } = useTheme();
   const [buttonStyle, setButtonStyle] = useState(theme.button.defaultButton);
   const click = () => {
     const doClick = async () => {
@@ -41,7 +43,7 @@ const Button: React.FC<IButton> = ({
             <Image source={icon} style={theme.button.icon} />
           </View>
         )}
-        <Text style={[theme.button.menuText, { marginRight: 10 }]}>
+        <Text style={[theme.button.menuText, { marginRight: 10 }, textStyle]}>
           {title}
         </Text>
         {icon && iconPlacement === "right" && (

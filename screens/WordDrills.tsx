@@ -5,23 +5,35 @@ import {
   Loader,
   Separator,
   WordDrill,
+  WordDrillListItem,
 } from "components";
 import { useAppData } from "context/AppDataContext";
-import { useTheme } from "context/ThemeContext";
+import { useThemeContext as useTheme } from "context/ThemeContext";
 import useWordQuery from "hooks/useWordQuery";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import constants from "utils/constants";
 import { pause } from "utils/utilities";
 
 let drillIndex = 0;
 
 const WordDrills: React.FC = () => {
-  const theme = useTheme();
-  const { wordList, generateRandomWordList, removeWordFromList } = useAppData();
+  const { theme } = useTheme();
+  const {
+    getWordList,
+    wordList,
+    generateRandomWordList,
+    replaceWordInList,
+    deleteWordFromList,
+  } = useAppData();
   const [isLoading, setIsLoading] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [currentWord, setCurrentWord] = useState<IDictionary>();
   const { getWord } = useWordQuery();
+
+  useEffect(() => {
+    getWordList();
+  }, []);
 
   const generateRandomWords = () => {
     const generate = async () => {
@@ -54,24 +66,50 @@ const WordDrills: React.FC = () => {
     doWordDrill();
   };
 
-  const onRemoveWord = () => {
+  const replaceCurrentWord = () => {
     if (currentWord) {
-      removeWordFromList(currentWord);
+      replaceWordInList(currentWord, 1);
     }
+  };
+
+  const onReplace = (word: string) => {
+    const doAsyncRemove = async () => {
+      setIsLoading(true);
+      replaceWordInList(word, 1);
+      await pause(0.5);
+      setIsLoading(false);
+    };
+    doAsyncRemove();
+  };
+
+  const deleteWord = (word: string) => {
+    const doAsyncRemove = async () => {
+      setIsLoading(true);
+      deleteWordFromList(word);
+      await pause(0.5);
+      setIsLoading(false);
+    };
+    doAsyncRemove();
+  };
+
+  const pressBack = () => {
+    setCurrentWord(undefined);
   };
 
   return (
     <View style={theme.container.screen}>
       <Separator height={50} />
       <View style={theme.container.body}>
-        <ButtonBackHome />
-        <Text style={theme.container.screenText}>Word Drills</Text>
+        <ButtonBackHome beforeReturn={pressBack} />
+        <View style={theme.container.pageHeader}>
+          <Text style={theme.container.pageHeaderText}>Word Drills</Text>
+        </View>
         {isLoading ? (
           <Loader isLoading={true} message="Loading random words" />
         ) : (
           <>
             {!wordList || !wordList.length ? (
-              <View>
+              <View style={theme.container.contentContainer}>
                 <Separator height={20} />
                 <Text style={theme.container.screenText}>
                   You can't run any word drills because you haven't selected any
@@ -80,7 +118,7 @@ const WordDrills: React.FC = () => {
                 <Separator height={20} />
                 <Button
                   style={theme.button.settings}
-                  title="Generate ten words randomly"
+                  title={`Generate ${constants.DEFAULT_NUMBER_OF_WORDS_IN_DRILLIST} words randomly`}
                   onPress={generateRandomWords}
                 >
                   <Ionicons name="add-sharp" size={32} color="gray" />
@@ -94,7 +132,7 @@ const WordDrills: React.FC = () => {
                     word={currentWord}
                     onAudioComplete={onAudioComplete}
                     onSkipDrill={onSkipDrill}
-                    onRemove={onRemoveWord}
+                    onRemove={replaceCurrentWord}
                   />
                 ) : (
                   <>
@@ -102,14 +140,27 @@ const WordDrills: React.FC = () => {
                       You have {wordList.length} words in your drill list.
                     </Text>
                     <Separator height={20} />
-                    <Button
-                      style={theme.button.settings}
-                      title="Start the drill!"
-                      onPress={() => {
-                        setHasStarted(true);
-                        doWordDrill();
-                      }}
-                    />
+                    <View style={theme.container.col}>
+                      {wordList.map((wordItem) => (
+                        <WordDrillListItem
+                          word={wordItem}
+                          key={wordItem}
+                          replace={onReplace}
+                          remove={deleteWord}
+                        />
+                      ))}
+                    </View>
+                    {wordList.length && (
+                      <Button
+                        style={theme.button.tertiaryButton}
+                        title="Start the drill!"
+                        textStyle={theme.button.tertiaryText}
+                        onPress={() => {
+                          setHasStarted(true);
+                          doWordDrill();
+                        }}
+                      />
+                    )}
                   </>
                 )}
               </View>

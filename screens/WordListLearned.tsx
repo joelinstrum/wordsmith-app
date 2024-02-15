@@ -1,9 +1,13 @@
-import { ButtonBackHome, DictionaryTable, Separator } from "components";
+import {
+  ButtonBackHome,
+  DictionaryTableOfLearnedWords,
+  Separator,
+} from "components";
 import { useAppData } from "context/AppDataContext";
 import { useThemeContext as useTheme } from "context/ThemeContext";
 import { Text, View } from "react-native";
 
-const WordList: React.FC = () => {
+const WordListLearned: React.FC = () => {
   const { theme } = useTheme();
   const { getDictionary } = useAppData();
 
@@ -16,12 +20,14 @@ const WordList: React.FC = () => {
       <Separator height={50} />
       <View style={theme.container.body}>
         <ButtonBackHome beforeReturn={homePress} />
-        <Text style={theme.container.screenText}>Word List</Text>
+        <Text style={theme.container.screenText}>
+          List of words you have learned
+        </Text>
         <Separator />
-        <DictionaryTable />
+        <DictionaryTableOfLearnedWords />
       </View>
     </View>
   );
 };
 
-export default WordList;
+export default WordListLearned;

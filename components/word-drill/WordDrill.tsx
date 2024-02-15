@@ -1,9 +1,9 @@
 import AudioPlay from "components/audio-play/AudioPlay";
 import RenderWord from "components/renderWord/RenderWord";
 import Separator from "components/separator/Separator";
+import { useThemeContext } from "context/ThemeContext";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import getTheme from "themes/theme";
 import { pause } from "utils/utilities";
 
 interface WordDrillProps {
@@ -19,7 +19,7 @@ const WordDrill: React.FC<WordDrillProps> = ({
   onSkipDrill,
   onRemove,
 }) => {
-  const theme = getTheme();
+  const { theme } = useThemeContext();
   const [showAudio, setShowAudio] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const WordDrill: React.FC<WordDrillProps> = ({
   };
   return (
     <View>
-      <RenderWord wordObject={word} showAddRemoveCheckbox={false} />
+      <RenderWord wordObject={word} />
       <Separator height={20} />
       {showAudio && (
         <AudioPlay

@@ -1,15 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import Separator from "components/separator/Separator";
+import { useThemeContext } from "context/ThemeContext";
 import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import getTheme from "themes/theme";
 
 interface ButtonBackHomeProps {
   beforeReturn?: VoidFunction;
 }
 
 const ButtonBackHome: React.FC<ButtonBackHomeProps> = ({ beforeReturn }) => {
-  const theme = getTheme();
+  const { theme } = useThemeContext();
   const navigation = useNavigation();
   const [arrowImage] = useState(require("assets/images/arrow-left.png"));
 

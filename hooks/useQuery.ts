@@ -6,7 +6,7 @@ export type ErrorCallback = (error: any) => void;
 type SQLiteDatabase = SQLite.WebSQLDatabase;
 
 const useQuery = () => {
-  const { db, initDb } = useDatabase();
+  const { db } = useDatabase();
 
   const query = (sqlQuery: string, params: any[] = []): Promise<any[]> => {
     return new Promise(async (resolve, reject) => {
@@ -37,7 +37,7 @@ const useQuery = () => {
           reject(transactionError);
         },
         () => {
-          // Transaction successful
+          // openedDb.closeAsync();
         }
       );
     });

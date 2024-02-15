@@ -1,26 +1,27 @@
-import { ViewStyle } from "react-native";
-import { newShade } from "utils/utilities";
-import * as themes from "./";
+import { newShade } from "./utilities";
 
-type TTheme = "light" | "dark";
-
-const getTheme = <T extends ViewStyle>(
-  theme: TTheme = "dark"
-): ThemeObject<T> => {
-  let themeFile: ITheme;
-  switch (theme) {
-    case "dark":
-      themeFile = themes.darkTheme;
-      break;
-    case "light":
-      themeFile = themes.lightTheme;
-      break;
-  }
+const themeHelper = (themeFile: ITheme) => {
   return {
+    ...{ primaryTextColor: themeFile.colors.primaryText },
+    ...{ colors: themeFile.colors },
     container: {
       body: {
-        marginLeft: 10,
-        marginRight: 10,
+        margin: 0,
+      },
+      pageHeader: {
+        width: "100%",
+        paddingTop: 2,
+        paddingBottom: 2,
+        backgroundColor: themeFile.colors.headingBackgroundColor,
+        height: 40,
+        display: "flex",
+        justifyItems: "center",
+        justifyContent: "center",
+      },
+      pageHeaderText: {
+        color: themeFile.colors.headingTextColor,
+        fontSize: 24,
+        paddingLeft: 10,
       },
       row: {
         flexDirection: "row",
@@ -38,6 +39,22 @@ const getTheme = <T extends ViewStyle>(
       contentContainer: {
         display: "flex",
         flexBais: "content",
+        marginLeft: 10,
+        marginRight: 10,
+      },
+      logo: {
+        backgroundColor: themeFile.colors.logoBackground,
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
+        justifyItems: "center",
+        paddingBottom: 10,
+      },
+      scrollTable: {
+        maxHeight: 450,
+        height: 450,
+        padding: 5,
+        paddingBottom: 30,
       },
       wordDrill: {
         paddingTop: 10,
@@ -57,7 +74,6 @@ const getTheme = <T extends ViewStyle>(
       warn: {
         minHeight: 200,
         margin: 20,
-        borderColor: "gold",
         borderWidth: 1,
         borderRadius: 10,
         padding: 10,
@@ -68,10 +84,42 @@ const getTheme = <T extends ViewStyle>(
       screen: {
         flex: 1,
         backgroundColor: themeFile.colors.primaryBackground,
-        padding: 10,
+        padding: 0,
         paddingTop: 50,
       },
       screenText: {
+        fontSize: 16,
+        color: themeFile.colors.primaryText,
+        padding: 10,
+      },
+      colFlexEnd: {
+        alignItems: "flex-end",
+        justifyContent: "center",
+        marginRight: 10,
+        marginBottom: 10,
+      },
+      colFlexStart: {
+        alignItems: "flex-start",
+        justifyItems: "center",
+        marginRight: 10,
+        marginBottom: 10,
+      },
+      settingsColLeft: {
+        width: 200,
+        alignItems: "flex-end",
+        justifyItems: "center",
+        marginRight: 10,
+        marginBottom: 10,
+        height: 50,
+        display: "flex",
+        justifyContent: "center",
+      },
+      settingsColRight: {
+        alignItems: "flex-start",
+        justifyItems: "center",
+        marginBottom: 10,
+      },
+      settingsText: {
         fontSize: 16,
         color: themeFile.colors.primaryText,
       },
@@ -120,16 +168,23 @@ const getTheme = <T extends ViewStyle>(
         paddingVertical: 10,
         borderRadius: 30,
       },
+      primaryText: {
+        fontSize: 16,
+        color: themeFile.colors.primaryButtonText,
+      },
       settings: {
-        backgroundColor: "#444",
-        color: "#efefef",
+        backgroundColor: themeFile.colors.tertiaryButtonBackground,
         borderRadius: 10,
         padding: 5,
         marginRight: 10,
       },
+      settingsText: {
+        fontSize: 16,
+        color: themeFile.colors.tertiaryText,
+      },
       menuText: {
         color: themeFile.colors.primaryText,
-        fontSize: 20,
+        fontSize: 24,
       },
       icon: {
         maxHeight: 32,
@@ -162,10 +217,22 @@ const getTheme = <T extends ViewStyle>(
         alignContent: "center",
         justifyContent: "center",
         justifyItems: "center",
-        borderColor: "rgba(255, 255, 255, .35)",
-        borderWidth: 2,
         borderRadius: 8,
-        backgroundColor: "#222",
+        backgroundColor: themeFile.colors.primaryButtonBackground,
+      },
+      replace: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        alignContent: "center",
+        justifyContent: "center",
+        justifyItems: "center",
+        justifySelf: "center",
+        alignSelf: "center",
+        borderRadius: 8,
+        backgroundColor: themeFile.colors.secondaryButtonBackground,
+        marginRight: 10,
+        paddingLeft: 10,
       },
       defaultButtonPressed: {
         display: "flex",
@@ -174,8 +241,6 @@ const getTheme = <T extends ViewStyle>(
         alignContent: "center",
         justifyContent: "center",
         justifyItems: "center",
-        borderColor: "rgba(255, 255, 255, .35)",
-        borderWidth: 2,
         borderRadius: 8,
         backgroundColor: "#444",
       },
@@ -186,20 +251,17 @@ const getTheme = <T extends ViewStyle>(
         alignContent: "center",
         justifyContent: "center",
         justifyItems: "center",
-        borderColor: "rgba(255, 255, 255, .35)",
-        borderWidth: 2,
         borderRadius: 8,
         padding: 10,
         marginBottom: 20,
         minWidth: 300,
         minHeight: 50,
+        backgroundColor: themeFile.colors.primaryButtonBackground,
       },
       skip: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        borderColor: "rgba(255, 255, 255, .35)",
-        borderWidth: 2,
         borderRadius: 8,
         padding: 10,
         marginBottom: 20,
@@ -213,8 +275,6 @@ const getTheme = <T extends ViewStyle>(
         alignContent: "center",
         justifyContent: "center",
         justifyItems: "center",
-        borderColor: "rgba(255, 255, 255, .35)",
-        backgroundColor: "#444",
         borderWidth: 2,
         borderRadius: 8,
         padding: 10,
@@ -230,9 +290,7 @@ const getTheme = <T extends ViewStyle>(
         alignContent: "center",
         justifyContent: "center",
         justifyItems: "center",
-        borderColor: "rgba(255, 255, 255, .35)",
         backgroundColor: "green",
-        borderWidth: 2,
         borderRadius: 8,
         padding: 10,
         marginBottom: 20,
@@ -246,8 +304,6 @@ const getTheme = <T extends ViewStyle>(
         alignContent: "center",
         justifyContent: "center",
         justifyItems: "center",
-        borderColor: "rgba(255, 255, 255, .35)",
-        backgroundColor: "#c99e02",
         borderWidth: 2,
         borderRadius: 8,
         padding: 10,
@@ -255,19 +311,32 @@ const getTheme = <T extends ViewStyle>(
         minWidth: 300,
         minHeight: 50,
       },
+      tertiaryButton: {
+        backgroundColor: themeFile.colors.tertiaryButtonBackground,
+        height: 40,
+      },
+      tertiaryText: {
+        color: themeFile.colors.tertiaryText,
+        fontSize: 16,
+      },
     },
     text: {
       primaryLink: {
         color: themeFile.colors.primaryLink,
+        fontSize: 16,
+      },
+      pimaryTextColor: {
+        color: themeFile.colors.primaryText,
+        fontSize: 16,
       },
     },
     dataTable: {
       header: {
-        backgroundColor: newShade(themeFile.colors.primaryBackground, 20),
+        backgroundColor: themeFile.colors.tableHeaderBackground,
         borderBottomWidth: 0,
       },
       headerText: {
-        color: themeFile.colors.secondaryText,
+        color: themeFile.colors.tableHeaderFontColor,
         fontSize: 16,
       },
       row: {
@@ -286,4 +355,4 @@ const getTheme = <T extends ViewStyle>(
   };
 };
 
-export default getTheme;
+export default themeHelper;

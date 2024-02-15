@@ -1,8 +1,8 @@
+import { useThemeContext } from "context/ThemeContext";
 import { View } from "react-native";
-import getTheme from "themes/theme";
 
 const ScreenContainer: React.FC<IScreenContainer> = ({ children }) => {
-  const theme = getTheme();
+  const { theme } = useThemeContext();
 
   return <View style={theme.container.screen}>{children}</View>;
 };

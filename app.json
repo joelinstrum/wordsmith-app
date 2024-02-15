@@ -15,23 +15,43 @@
       "resizeMode": "contain",
       "backgroundColor": "#222"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "permissions": ["NSFileProtectionNone"]
+      "permissions": [
+        "NSFileProtectionNone"
+      ]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#222"
       },
-      "permissions": ["WRITE_EXTERNAL_STORAGE"]
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "package": "com.joe44850.wordsmithapp"
     },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
     "resolver": {
-      "assetExts": ["db", "ttf", "png", "json", "jpeg", "jpg", "svg"]
+      "assetExts": [
+        "db",
+        "ttf",
+        "png",
+        "json",
+        "jpeg",
+        "jpg",
+        "svg"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cc889dbd-8646-40e5-a060-0b7fb6e865ba"
+      }
     }
   }
 }

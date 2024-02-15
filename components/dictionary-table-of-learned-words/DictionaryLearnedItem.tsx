@@ -1,33 +1,33 @@
 import { useAppData } from "context/AppDataContext";
 import { useThemeContext as useTheme } from "context/ThemeContext";
+import { useState } from "react";
 import { Checkbox, DataTable } from "react-native-paper";
-import { getCategory } from "utils/utilities";
 
-interface DictionaryItemProps {
+interface DictionaryLearnedItemProps {
   item: IDictionary;
   onWordPress: (wordObject: IDictionary, index: number) => void;
   index: number;
 }
 
-const DictionaryItem: React.FC<DictionaryItemProps> = ({
+const DictionaryLearnedItem: React.FC<DictionaryLearnedItemProps> = ({
   item,
   onWordPress,
   index,
 }) => {
   const { theme } = useTheme();
-  const { wordList, updateWordList } = useAppData();
+  const { updateHasLearned } = useAppData();
+  const [hasLearned, setHasLearned] = useState(item.hasLearned === "true");
 
   const pressCheckbox = () => {
-    updateWordList(item.word, item.id);
+    setHasLearned(!hasLearned);
+    updateHasLearned(item.id, !hasLearned);
   };
 
   return (
     <DataTable.Row key={item.id} style={theme.dataTable.row}>
       <DataTable.Cell textStyle={theme.dataTable.rowText} style={{ flex: 1 }}>
         <Checkbox
-          status={
-            wordList && wordList.includes(item.word) ? "checked" : "unchecked"
-          }
+          status={hasLearned ? "checked" : "unchecked"}
           onPress={pressCheckbox}
           color={theme.colors.checkboxColor}
         />
@@ -44,10 +44,10 @@ const DictionaryItem: React.FC<DictionaryItemProps> = ({
         textStyle={theme.dataTable.rowText}
         style={{ flex: 2 }}
       >
-        {getCategory(item.category)}
+        {item.category}
       </DataTable.Cell>
     </DataTable.Row>
   );
 };
 
-export default DictionaryItem;
+export default DictionaryLearnedItem;

@@ -3,17 +3,20 @@ import Button from "components/button/Button";
 import Loader from "components/loader/Loader";
 import RenderWord from "components/renderWord/RenderWord";
 import { useAppData } from "context/AppDataContext";
-import { useTheme } from "context/ThemeContext";
+import { useThemeContext as useTheme } from "context/ThemeContext";
+import useSpeakOptions from "hooks/useSpeakOptions";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { DataTable } from "react-native-paper";
+import { getStoredItem, setStoredItem } from "utils/utilities";
 import DictionaryItem from "./DictionaryItem";
 
 const DictionaryTable = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [page, setPage] = React.useState<number>(0);
-  const [numberOfItemsPerPageList] = React.useState([5, 10]);
+  const [numberOfItemsPerPageList] = React.useState([5, 7, 10]);
+
   const {
     dictionary,
     getWordList,
@@ -27,6 +30,23 @@ const DictionaryTable = () => {
   const [itemsPerPage, onItemsPerPageChange] = React.useState(
     numberOfItemsPerPageList[0]
   );
+
+  const updateItemsPerPage = (itemsPerPage: number) => {
+    onItemsPerPageChange(itemsPerPage);
+    setStoredItem("@WordSmith:numberOfItemsPerPage", itemsPerPage.toString());
+  };
+
+  useEffect(() => {
+    const setItems = async () => {
+      const items =
+        (await getStoredItem("@WordSmith:numberOfItemsPerPage")) || "5";
+      const n = parseInt(items, 10);
+      onItemsPerPageChange(n);
+    };
+    setItems();
+  }, []);
+
+  const { numberOfDrillWords } = useSpeakOptions();
 
   const [showCurrentWord, setShowCurrentWord] = useState(false);
   const [currentWord, setCurrentWord] = useState<IDictionary>();
@@ -72,10 +92,21 @@ const DictionaryTable = () => {
     }
   }, [currentIndex]);
 
+  const addRandomWords = async (n: number) => {
+    await addToList(n);
+  };
+
   const renderDictionaryTable = () => (
     <DataTable>
       <DataTable.Header style={theme.dataTable.header}>
-        <DataTable.Title textStyle={theme.dataTable.headerText}>
+        <DataTable.Title
+          textStyle={theme.dataTable.headerText}
+          style={[
+            {
+              flex: 1,
+            },
+          ]}
+        >
           +/-
         </DataTable.Title>
         <DataTable.Title
@@ -89,6 +120,7 @@ const DictionaryTable = () => {
           textStyle={theme.dataTable.headerText}
           onPress={() => sortDictionary("category")}
           numeric
+          style={{ flex: 2 }}
         >
           Category
         </DataTable.Title>
@@ -112,7 +144,7 @@ const DictionaryTable = () => {
         label={`${from + 1}-${to} of ${dictionary.length}`}
         numberOfItemsPerPageList={numberOfItemsPerPageList}
         numberOfItemsPerPage={itemsPerPage}
-        onItemsPerPageChange={onItemsPerPageChange}
+        onItemsPerPageChange={updateItemsPerPage}
         showFastPaginationControls
         selectPageDropdownLabel={"Rows per page"}
         style={[{ backgroundColor: "#aaa" }]}
@@ -160,23 +192,28 @@ const DictionaryTable = () => {
           ) : (
             <>
               {renderDictionaryTable()}
-              <View style={{ marginTop: 20 }}>
+              <View
+                style={[{ marginTop: 20 }, theme.container.contentContainer]}
+              >
                 <Button
                   style={theme.button.settings}
+                  textStyle={theme.button.settingsText}
                   title="Replace drill list randomly"
                   onPress={generateRandomWordList}
                 >
                   <Ionicons name="add-sharp" size={32} color="gray" />
                 </Button>
               </View>
-              {wordList.length < 5 && (
+              {wordList.length > 0 && wordList.length < numberOfDrillWords && (
                 <View style={{ marginTop: 20 }}>
                   <Button
                     style={theme.button.settings}
                     title={`Add ${
-                      5 - wordList.length
+                      numberOfDrillWords - wordList.length
                     } random words to drill list`}
-                    onPress={addToList}
+                    onPress={() =>
+                      addRandomWords(numberOfDrillWords - wordList.length)
+                    }
                   >
                     <Ionicons name="add-sharp" size={32} color="gray" />
                   </Button>

@@ -63,7 +63,41 @@ export const newShade = (hexColor: string, magnitude: number) => {
   }
 };
 
+export const getUsage = (inputString: string): string => {
+  var goodQuotes = inputString.replace(/[“”]/g, '"');
+  const match = goodQuotes.match(/"([^"]*)"/);
+  return match ? match[1] : inputString;
+};
+
+const getMeaning = (inputString: string): string => {
+  let newString = inputString.replace(/tr\./g, "transitive ");
+  newString = newString.replace(/intr\./g, "intransitive ");
+  return newString;
+};
+
+const getPronounciation = (inputString: string): string => {
+  const match = inputString.match(/\((.*?)(?:,|$)/); // Match text between parentheses up to comma or end of string
+  if (match) {
+    console.log("Match: ", match[1]);
+    const textInsideParentheses = match[1].trim(); // Extract text between parentheses and trim whitespace
+    const pronunciation = textInsideParentheses.split(":")[1]; // Split by colon and get second part
+    if (pronunciation) {
+      return pronunciation.trim(); // Return the trimmed pronunciation
+    }
+  }
+  return inputString; // Return empty string if no match or no pronunciation found
+};
+
+const getCategory = (inputString: string): string => {
+  const pattern = /AWAD.*/;
+  const newString = inputString.replace(pattern, "");
+  return newString;
+};
+
 export {
+  getCategory,
+  getMeaning,
+  getPronounciation as getPronunciation,
   getStoredItem,
   getStoredItemObject,
   getTimestamp,

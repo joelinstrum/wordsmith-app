@@ -1,5 +1,5 @@
 import Separator from "components/separator/Separator";
-import { useTheme } from "context/ThemeContext";
+import { useThemeContext as useTheme } from "context/ThemeContext";
 import { ActivityIndicator, Text, View } from "react-native";
 
 interface LoaderProps {
@@ -11,7 +11,7 @@ const Loader: React.FC<LoaderProps> = ({
   isLoading = false,
   message = "loading...",
 }) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   return (
     <>

@@ -1,6 +1,6 @@
 // useGetDictionary.ts
 import { useEffect, useState } from "react";
-import { getTimestamp } from "utils/utilities";
+import { getTimestamp, pause } from "utils/utilities";
 import useQuery from "./useQuery";
 
 const useGetDictionary = () => {
@@ -10,8 +10,9 @@ const useGetDictionary = () => {
   const [previousTrigger, setPreviousTrigger] = useState<Number | undefined>(0);
   const [dictionaryLoading, setDictionaryLoading] = useState(false);
   const [hasDictionary, setHasDictionary] = useState(false);
-  let sortDirection = "asc";
-  let sortColumn = "word";
+  const [hasDictionaryError, setHasDictionaryError] = useState(false);
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortColumn, setSortColumn] = useState("word");
 
   useEffect(() => {
     if (trigger !== previousTrigger) {
@@ -40,13 +41,17 @@ const useGetDictionary = () => {
   const getDictionary = async () => {
     const sql = `SELECT * FROM dictionary ORDER BY isSelected DESC, ${sortColumn} ${sortDirection};`;
     try {
+      setHasDictionaryError(false);
       const data = await query(sql, []);
       setDictionary(data);
+      setDictionaryLoading(false);
+      return;
     } catch (e) {
       setDictionary([]);
       setDictionaryLoading(false);
+      setHasDictionaryError(true);
+      return;
     }
-    return;
   };
 
   const getHasDictionary = async () => {
@@ -55,11 +60,13 @@ const useGetDictionary = () => {
       const data = await query(sql, []);
       if (data && data[0]?.count) {
         setHasDictionary(true);
+        getDictionary();
       } else {
         setHasDictionary(false);
       }
     } catch (e) {
       setHasDictionary(false);
+      setHasDictionaryError(true);
     }
   };
 
@@ -81,7 +88,13 @@ const useGetDictionary = () => {
   };
 
   const sort = (sortColumn: string) => {
-    console.log("SORT: ", sortColumn);
+    const doSort = async () => {
+      setSortColumn(sortColumn);
+      setSortDirection((current) => (current === "asc" ? "desc" : "asc"));
+      await pause(0.1);
+      getDictionary();
+    };
+    doSort();
   };
 
   return {
@@ -90,8 +103,12 @@ const useGetDictionary = () => {
     getDictionary,
     triggerDictionaryQuery,
     sort,
+    sortColumn,
+    sortDirection,
     hasDictionary,
+    setHasDictionaryError,
     updateField,
+    hasDictionaryError,
   };
 };
 

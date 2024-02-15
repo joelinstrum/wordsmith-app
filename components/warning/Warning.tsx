@@ -1,6 +1,6 @@
 import Button from "components/button/Button";
 import Separator from "components/separator/Separator";
-import { useTheme } from "context/ThemeContext";
+import { useThemeContext as useTheme } from "context/ThemeContext";
 import { Text, View } from "react-native";
 
 interface WarningProps {
@@ -10,7 +10,7 @@ interface WarningProps {
 }
 
 const Warning: React.FC<WarningProps> = ({ message, onCancel, onProceed }) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const pressCancel = () => {
     if (onCancel) {

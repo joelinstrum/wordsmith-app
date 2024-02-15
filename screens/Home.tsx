@@ -1,36 +1,49 @@
 import { Loader, Logo, Menu, Separator } from "components";
 import { useAppData } from "context/AppDataContext";
-import { useTheme } from "context/ThemeContext";
+import { useThemeContext as useTheme } from "context/ThemeContext";
 import useReloadDictionary from "hooks/useReloadDictionary";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import { pause } from "utils/utilities";
 
 const Home: React.FC = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const {
     hasInitialized,
     hasDictionary,
     dictionary,
     getWordList,
     getDictionary,
+    hasDictionaryError,
   } = useAppData();
   const [isLoading, setIsLoading] = useState(true);
   const { reloadDictionary } = useReloadDictionary();
+  const [loadingMessage, setLoadingMessage] = useState("loading");
 
   useEffect(() => {
-    if (dictionary && dictionary.length) {
+    if (hasDictionary) {
       setIsLoading(false);
-      getWordList();
-    } else if (hasInitialized && hasDictionary) {
-      setIsLoading(false);
-    } else if (hasInitialized && !hasDictionary) {
-      // reloadDictionary();
     }
-  }, [hasInitialized, hasDictionary, dictionary]);
+  }, [hasDictionary]);
+
+  useEffect(() => {
+    const doReloadAsync = async () => {
+      setLoadingMessage("Copying dictionary");
+      await reloadDictionary();
+      await pause(0.5);
+      setLoadingMessage("initializing database");
+      await pause(1);
+      setLoadingMessage("Complete...");
+      await pause(1);
+      setIsLoading(false);
+    };
+    if (hasDictionaryError) {
+      doReloadAsync();
+    }
+  }, [hasDictionaryError]);
 
   useEffect(() => {
     getDictionary();
-    console.log("load dictionary");
   }, []);
 
   return (
@@ -45,7 +58,11 @@ const Home: React.FC = () => {
           </Text>
         </View>
         <Separator height={50} />
-        {isLoading ? <Loader isLoading={isLoading} /> : <Menu />}
+        {isLoading ? (
+          <Loader isLoading={isLoading} message={loadingMessage} />
+        ) : (
+          <Menu />
+        )}
       </View>
     </>
   );

@@ -2,43 +2,52 @@ import { useAppData } from "context/AppDataContext";
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 import { useState } from "react";
-import { pause } from "utils/utilities";
-import useQuery from "./useQuery";
 
 const useReloadDictionary = () => {
   const [loadingDictionary, setLoadingDictionary] = useState(false);
-  const query = useQuery();
   const { getDictionary } = useAppData();
 
-  const reloadDictionary = () => {
-    const doReload = async () => {
-      await pause(0.5);
+  const doReload = async () => {
+    try {
       await copyOriginalDb();
-      await getDictionary();
-      setLoadingDictionary(false);
-    };
+      return true;
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  const reloadDictionary = async () => {
     setLoadingDictionary(true);
-    doReload();
+    try {
+      await doReload(); // This is where we await the asynchronous function
+      setLoadingDictionary(false);
+    } catch (error) {
+      console.error("Error reloading dictionary:", error);
+      setLoadingDictionary(false); // Ensure loading state is set to false in case of error
+    }
   };
 
   const copyOriginalDb = async () => {
     const destinationFilePath = `${FileSystem.documentDirectory}SQLite/wordsmith.db`;
+    return new Promise(async (accept, reject) => {
+      try {
+        const asset = Asset.fromModule(
+          require("assets/data/dictionary_database.db")
+        );
+        await asset.downloadAsync();
+        const localUri: string = asset.localUri!;
 
-    try {
-      const asset = Asset.fromModule(
-        require("assets/data/dictionary_database.db")
-      );
-      await asset.downloadAsync();
-      const localUri: string = asset.localUri!;
-
-      await FileSystem.copyAsync({
-        from: localUri,
-        to: destinationFilePath,
-      });
-    } catch (error) {
-      console.error("Error copying database file:", error);
-      throw error;
-    }
+        await FileSystem.copyAsync({
+          from: localUri,
+          to: destinationFilePath,
+        });
+        accept(true);
+      } catch (error) {
+        reject(error);
+        console.error("Error copying database file:", error);
+        throw error;
+      }
+    });
   };
 
   const removeDictionary = async () => {

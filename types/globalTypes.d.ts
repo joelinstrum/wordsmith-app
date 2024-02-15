@@ -6,6 +6,12 @@ declare interface ITheme {
     primaryText: string;
     primaryBorder: string;
     primaryButtonBackground: string;
+    primaryButtonText: string;
+    tertiaryButtonBackground: string;
+    headingBackgroundColor: string;
+    headingTextColor: string;
+    logoBackground: string;
+    logoColor: string;
     secondaryBackground: string;
     secondaryText: string;
     secondaryButtonBackground: string;
@@ -23,6 +29,9 @@ declare interface ITheme {
     dataRowBackground: string;
     modalBackground: string;
     modalText: string;
+    tableHeaderBackground: string;
+    tableHeaderFontColor: string;
+    checkboxColor: string;
   };
 }
 
@@ -48,5 +57,11 @@ declare interface IDictionary {
   usage: string;
   etymology: string;
   isSelected: string;
+  hasLearned: string;
+  isKnown: string;
+  pronunciation: string;
   [key: string]: string | number;
 }
+
+type TTheme = "Dark" | "Light";
+T;

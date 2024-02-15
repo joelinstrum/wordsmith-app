@@ -1,10 +1,10 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Button from "components/button/Button";
+import { useThemeContext as useTheme } from "context/ThemeContext";
 import * as Speech from "expo-speech";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import getTheme from "themes/theme";
-import { pause } from "utils/utilities";
+import { getMeaning, getUsage, pause } from "utils/utilities";
 
 interface AudioPlayProps {
   word: IDictionary;
@@ -23,15 +23,10 @@ const AudioPlay: React.FC<AudioPlayProps> = ({
 }) => {
   const [pauseVoice, setPauseVoice] = useState(false);
   const [showSkipping, setShowSkipping] = useState(false);
-  const theme = getTheme();
-
-  const getUsage = (inputString: string) => {
-    var goodQuotes = inputString.replace(/[“”]/g, '"');
-    const match = goodQuotes.match(/"([^"]*)"/);
-    return match ? match[1] : inputString;
-  };
+  const { theme } = useTheme();
 
   const speak = (wordsToSpeak: string, voiceOptions: any, pauseAfter = 0) => {
+    Speech.stop();
     return new Promise((resolve, reject) => {
       if (pauseVoice) {
         resolve(true);
@@ -59,14 +54,21 @@ const AudioPlay: React.FC<AudioPlayProps> = ({
       if (pauseVoice) {
         Speech.stop();
         return;
+      } else if (word === undefined) {
+        Speech.stop();
+        return;
       }
       const usage = getUsage(word.usage);
-      await speak(`The word is`, options, 0.5);
+      // const phoneticWord = getPronunciation(word.pronunciation);
+      const meaning = getMeaning(word.meaning);
       await speak(word.word, options);
       await speak(`${word.word} definition`, options, 0.5);
-      await speak(word.meaning, options, 1);
+      await speak(meaning, options, 1);
       await speak(`Some usages of ${word.word} `, options, 0.5);
-      await speak(usage, options);
+      await speak(usage, options, 0.5);
+      await speak(word.word, options, 1);
+      await speak(`Next word`, options);
+
       onAudioComplete();
     };
     doAudio();
@@ -78,9 +80,9 @@ const AudioPlay: React.FC<AudioPlayProps> = ({
   };
 
   const pressSkip = () => {
+    Speech.stop();
     setShowSkipping(true);
     const doSkip = async () => {
-      Speech.stop();
       onSkipDrill();
     };
     doSkip();
@@ -126,7 +128,7 @@ const AudioPlay: React.FC<AudioPlayProps> = ({
           </Button>
           <Button
             onPress={pressRemove}
-            title={"Remove"}
+            title={"Replace"}
             style={theme.button.settings}
           >
             <Ionicons name={"close-circle"} size={32} />

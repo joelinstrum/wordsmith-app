@@ -1,9 +1,11 @@
+import useTheme from "hooks/useTheme";
 import React, { ReactNode, createContext, useContext } from "react";
 import { ViewStyle } from "react-native";
-import getTheme from "themes/theme";
 
 interface ThemeContextProps {
   theme: ThemeObject<ViewStyle>;
+  updateTheme: (themeToUse: TTheme) => void;
+  themeName: TTheme;
 }
 
 interface ThemeProviderProps {
@@ -13,17 +15,23 @@ interface ThemeProviderProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const theme = getTheme();
+  const { theme, updateTheme, themeName } = useTheme();
 
   return (
-    <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, updateTheme, themeName }}>
+      {children}
+    </ThemeContext.Provider>
   );
 };
 
-export const useTheme = () => {
+export const useThemeContext = () => {
   const context = useContext(ThemeContext);
   if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
-  return context.theme;
+  return {
+    theme: context.theme,
+    updateTheme: context.updateTheme,
+    themeName: context.themeName,
+  };
 };
