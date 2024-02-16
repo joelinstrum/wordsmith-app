@@ -177,6 +177,7 @@ const themeHelper = (themeFile: ITheme) => {
         borderRadius: 10,
         padding: 5,
         marginRight: 10,
+        fontSize: 16,
       },
       settingsText: {
         fontSize: 16,

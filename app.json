@@ -2,9 +2,9 @@
   "expo": {
     "name": "wordsmith-app",
     "slug": "wordsmith-app",
-    "version": "1.0.0",
+    "version": "1.0.7",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/WordsmithIcon.png",
     "userInterfaceStyle": "light",
     "permissions": [
       "CAMERA_ROLL",
@@ -15,38 +15,25 @@
       "resizeMode": "contain",
       "backgroundColor": "#222"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "permissions": [
-        "NSFileProtectionNone"
-      ]
+      "permissions": ["NSFileProtectionNone"]
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/WordsmithIcon.png",
         "backgroundColor": "#222"
       },
-      "permissions": [
-        "WRITE_EXTERNAL_STORAGE"
-      ],
-      "package": "com.joe44850.wordsmithapp"
+      "permissions": ["WRITE_EXTERNAL_STORAGE"],
+      "package": "com.joe44850.wordsmithapp",
+      "versionCode": 6
     },
     "web": {
-      "favicon": "./assets/images/icon.png"
+      "favicon": "./assets/images/WordsmithIcon.png"
     },
     "resolver": {
-      "assetExts": [
-        "db",
-        "ttf",
-        "png",
-        "json",
-        "jpeg",
-        "jpg",
-        "svg"
-      ]
+      "assetExts": ["db", "ttf", "png", "json", "jpeg", "jpg", "svg"]
     },
     "extra": {
       "eas": {

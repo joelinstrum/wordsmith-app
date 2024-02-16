@@ -8,14 +8,7 @@ import { pause } from "utils/utilities";
 
 const Home: React.FC = () => {
   const { theme } = useTheme();
-  const {
-    hasInitialized,
-    hasDictionary,
-    dictionary,
-    getWordList,
-    getDictionary,
-    hasDictionaryError,
-  } = useAppData();
+  const { hasDictionary, getDictionary, hasDictionaryError } = useAppData();
   const [isLoading, setIsLoading] = useState(true);
   const { reloadDictionary } = useReloadDictionary();
   const [loadingMessage, setLoadingMessage] = useState("loading");
@@ -32,9 +25,9 @@ const Home: React.FC = () => {
       await reloadDictionary();
       await pause(0.5);
       setLoadingMessage("initializing database");
-      await pause(1);
+      await pause(0.5);
       setLoadingMessage("Complete...");
-      await pause(1);
+      await pause(0.5);
       setIsLoading(false);
     };
     if (hasDictionaryError) {

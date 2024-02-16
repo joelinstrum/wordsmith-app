@@ -20,6 +20,7 @@ const DictionaryTable = () => {
   const {
     dictionary,
     getWordList,
+    getDictionary,
     dictionaryLoading,
     setSortColumn,
     generateRandomWordList,
@@ -42,6 +43,9 @@ const DictionaryTable = () => {
         (await getStoredItem("@WordSmith:numberOfItemsPerPage")) || "5";
       const n = parseInt(items, 10);
       onItemsPerPageChange(n);
+      if (!dictionary.length) {
+        getDictionary();
+      }
     };
     setItems();
   }, []);
@@ -208,6 +212,7 @@ const DictionaryTable = () => {
                 <View style={{ marginTop: 20 }}>
                   <Button
                     style={theme.button.settings}
+                    textStyle={theme.button.settingsText}
                     title={`Add ${
                       numberOfDrillWords - wordList.length
                     } random words to drill list`}

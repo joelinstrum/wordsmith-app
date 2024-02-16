@@ -151,15 +151,32 @@ const WordDrills: React.FC = () => {
                       ))}
                     </View>
                     {wordList.length && (
-                      <Button
-                        style={theme.button.tertiaryButton}
-                        title="Start the drill!"
-                        textStyle={theme.button.tertiaryText}
-                        onPress={() => {
-                          setHasStarted(true);
-                          doWordDrill();
-                        }}
-                      />
+                      <>
+                        <Button
+                          style={theme.button.tertiaryButton}
+                          title="Start the drill!"
+                          textStyle={theme.button.tertiaryText}
+                          onPress={() => {
+                            setHasStarted(true);
+                            doWordDrill();
+                          }}
+                        />
+                        <View
+                          style={[
+                            { marginTop: 20 },
+                            theme.container.contentContainer,
+                          ]}
+                        >
+                          <Button
+                            style={theme.button.settings}
+                            textStyle={theme.button.settingsText}
+                            title="Replace drill list randomly"
+                            onPress={generateRandomWordList}
+                          >
+                            <Ionicons name="add-sharp" size={32} color="gray" />
+                          </Button>
+                        </View>
+                      </>
                     )}
                   </>
                 )}

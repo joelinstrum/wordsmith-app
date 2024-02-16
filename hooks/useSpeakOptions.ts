@@ -10,6 +10,8 @@ const useSpeakOptions = () => {
       );
       if (numberOfDrillWords) {
         setNumberOfDrillWords(parseInt(numberOfDrillWords));
+      } else {
+        setNumberOfDrillWords(5);
       }
     };
     getItems();
