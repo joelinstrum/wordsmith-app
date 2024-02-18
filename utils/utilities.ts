@@ -1,4 +1,10 @@
+/* bring this in first*/
+import { NativeEventEmitter } from "react-native";
+const eventEmitter = new NativeEventEmitter();
+/* bring in the rest */
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Audio } from "expo-av";
+import * as Speech from "expo-speech";
 
 const pause = (seconds: number) => {
   const milliseconds = seconds * 1000;
@@ -94,6 +100,21 @@ const getCategory = (inputString: string): string => {
   return newString;
 };
 
+const playWordMp3 = async (word: string) => {
+  const mp3Uri = `https://wordsmith.org/words/${word.toLowerCase()}.mp3`;
+  const sound = new Audio.Sound();
+  await sound.loadAsync({
+    uri: mp3Uri,
+  });
+  await sound.playAsync();
+  return;
+};
+
+const playWordNative = async (word: string) => {
+  await Speech.speak(word);
+  return true;
+};
+
 export {
   getCategory,
   getMeaning,
@@ -102,5 +123,7 @@ export {
   getStoredItemObject,
   getTimestamp,
   pause,
+  playWordMp3,
+  playWordNative,
   setStoredItem,
 };

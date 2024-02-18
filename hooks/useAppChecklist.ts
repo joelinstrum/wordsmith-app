@@ -1,4 +1,4 @@
-import useGetDictionary from "hooks/useGetDictionary";
+import useGetDictionary from "hooks/useDictionary";
 import { useEffect, useState } from "react";
 import { getStoredItem } from "utils/utilities";
 

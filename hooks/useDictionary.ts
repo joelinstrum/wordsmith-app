@@ -39,7 +39,7 @@ const useGetDictionary = () => {
   }, [dictionaryLoading]);
 
   const getDictionary = async () => {
-    const sql = `SELECT * FROM dictionary ORDER BY isSelected DESC, ${sortColumn} ${sortDirection};`;
+    const sql = `SELECT * FROM dictionary ORDER BY isSelected DESC, ${sortColumn} COLLATE NOCASE ${sortDirection};`;
     try {
       setHasDictionaryError(false);
       const data = await query(sql, []);

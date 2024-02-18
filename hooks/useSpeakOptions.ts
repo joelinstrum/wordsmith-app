@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import constants from "utils/constants";
 import { getStoredItem, setStoredItem } from "utils/utilities";
 
 const useSpeakOptions = () => {
@@ -11,7 +12,7 @@ const useSpeakOptions = () => {
       if (numberOfDrillWords) {
         setNumberOfDrillWords(parseInt(numberOfDrillWords));
       } else {
-        setNumberOfDrillWords(5);
+        setNumberOfDrillWords(constants.DEFAULT_NUMBER_OF_WORDS_IN_DRILLIST);
       }
     };
     getItems();

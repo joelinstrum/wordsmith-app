@@ -1,7 +1,10 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Button from "components/button/Button";
 import { useAppData } from "context/AppDataContext";
 import { useThemeContext as useTheme } from "context/ThemeContext";
+import { useState } from "react";
 import { Checkbox, DataTable } from "react-native-paper";
-import { getCategory } from "utils/utilities";
+import { getCategory, playWordMp3, playWordNative } from "utils/utilities";
 
 interface DictionaryItemProps {
   item: IDictionary;
@@ -16,9 +19,20 @@ const DictionaryItem: React.FC<DictionaryItemProps> = ({
 }) => {
   const { theme } = useTheme();
   const { wordList, updateWordList } = useAppData();
+  const [evenOdd, setEvenOdd] = useState(0);
 
   const pressCheckbox = () => {
     updateWordList(item.word, item.id);
+  };
+
+  const play = (word: string) => {
+    if (evenOdd === 0) {
+      setEvenOdd(1);
+      playWordMp3(word);
+    } else {
+      setEvenOdd(0);
+      playWordNative(word);
+    }
   };
 
   return (
@@ -31,6 +45,11 @@ const DictionaryItem: React.FC<DictionaryItemProps> = ({
           onPress={pressCheckbox}
           color={theme.colors.checkboxColor}
         />
+      </DataTable.Cell>
+      <DataTable.Cell textStyle={theme.dataTable.rowText} style={{ flex: 1 }}>
+        <Button onPress={() => play(item.word)} style={theme.button.play}>
+          <Ionicons name="play" />
+        </Button>
       </DataTable.Cell>
       <DataTable.Cell
         numeric

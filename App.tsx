@@ -1,4 +1,3 @@
-// App.tsx
 import { DarkTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppProvider from "context/AppProvider"; // Import the AppProvider
@@ -10,7 +9,6 @@ import {
   WordList,
   WordListLearned,
 } from "./screens";
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {

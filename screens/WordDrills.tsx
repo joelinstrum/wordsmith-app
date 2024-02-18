@@ -2,17 +2,16 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   Button,
   ButtonBackHome,
-  Loader,
   Separator,
   WordDrill,
   WordDrillListItem,
 } from "components";
 import { useAppData } from "context/AppDataContext";
 import { useThemeContext as useTheme } from "context/ThemeContext";
+import useSpeakOptions from "hooks/useSpeakOptions";
 import useWordQuery from "hooks/useWordQuery";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import constants from "utils/constants";
+import { ScrollView, Text, View } from "react-native";
 import { pause } from "utils/utilities";
 
 let drillIndex = 0;
@@ -30,6 +29,7 @@ const WordDrills: React.FC = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [currentWord, setCurrentWord] = useState<IDictionary>();
   const { getWord } = useWordQuery();
+  const { numberOfDrillWords } = useSpeakOptions();
 
   useEffect(() => {
     getWordList();
@@ -104,42 +104,44 @@ const WordDrills: React.FC = () => {
         <View style={theme.container.pageHeader}>
           <Text style={theme.container.pageHeaderText}>Word Drills</Text>
         </View>
-        {isLoading ? (
-          <Loader isLoading={true} message="Loading random words" />
-        ) : (
-          <>
-            {!wordList || !wordList.length ? (
-              <View style={theme.container.contentContainer}>
-                <Separator height={20} />
-                <Text style={theme.container.screenText}>
-                  You can't run any word drills because you haven't selected any
-                  words from the dictionary
-                </Text>
-                <Separator height={20} />
-                <Button
-                  style={theme.button.settings}
-                  title={`Generate ${constants.DEFAULT_NUMBER_OF_WORDS_IN_DRILLIST} words randomly`}
-                  onPress={generateRandomWords}
-                >
-                  <Ionicons name="add-sharp" size={32} color="gray" />
-                </Button>
-              </View>
-            ) : (
-              <View style={theme.container.contentContainer}>
-                <Separator height={20} />
-                {hasStarted && currentWord ? (
-                  <WordDrill
-                    word={currentWord}
-                    onAudioComplete={onAudioComplete}
-                    onSkipDrill={onSkipDrill}
-                    onRemove={replaceCurrentWord}
-                  />
-                ) : (
-                  <>
-                    <Text style={theme.container.screenText}>
-                      You have {wordList.length} words in your drill list.
-                    </Text>
-                    <Separator height={20} />
+        <>
+          {!wordList || !wordList.length ? (
+            <View style={theme.container.contentContainer}>
+              <Separator height={20} />
+              <Text style={theme.container.screenText}>
+                You can't run any word drills because you haven't selected any
+                words from the dictionary
+              </Text>
+              <Separator height={20} />
+              <Button
+                style={theme.button.settings}
+                textStyle={theme.button.settingsText}
+                title={`Generate ${numberOfDrillWords} words randomly`}
+                onPress={generateRandomWords}
+              >
+                <Ionicons name="add-sharp" size={32} color="gray" />
+              </Button>
+            </View>
+          ) : (
+            <View style={theme.container.contentContainer}>
+              <Separator height={20} />
+              {hasStarted && currentWord ? (
+                <WordDrill
+                  word={currentWord}
+                  onAudioComplete={onAudioComplete}
+                  onSkipDrill={onSkipDrill}
+                  onRemove={replaceCurrentWord}
+                />
+              ) : (
+                <>
+                  <Text style={theme.container.screenText}>
+                    You have {wordList.length} words in your drill list.
+                  </Text>
+                  <Separator height={20} />
+                  <ScrollView
+                    style={theme.container.scrollTable}
+                    showsVerticalScrollIndicator
+                  >
                     <View style={theme.container.col}>
                       {wordList.map((wordItem) => (
                         <WordDrillListItem
@@ -150,40 +152,40 @@ const WordDrills: React.FC = () => {
                         />
                       ))}
                     </View>
-                    {wordList.length && (
-                      <>
+                  </ScrollView>
+                  {wordList.length && (
+                    <>
+                      <Button
+                        style={theme.button.tertiaryButton}
+                        title="Start the drill!"
+                        textStyle={theme.button.tertiaryText}
+                        onPress={() => {
+                          setHasStarted(true);
+                          doWordDrill();
+                        }}
+                      />
+                      <View
+                        style={[
+                          { marginTop: 20 },
+                          theme.container.contentContainer,
+                        ]}
+                      >
                         <Button
-                          style={theme.button.tertiaryButton}
-                          title="Start the drill!"
-                          textStyle={theme.button.tertiaryText}
-                          onPress={() => {
-                            setHasStarted(true);
-                            doWordDrill();
-                          }}
-                        />
-                        <View
-                          style={[
-                            { marginTop: 20 },
-                            theme.container.contentContainer,
-                          ]}
+                          style={theme.button.settings}
+                          textStyle={theme.button.settingsText}
+                          title="Replace drill list randomly"
+                          onPress={generateRandomWordList}
                         >
-                          <Button
-                            style={theme.button.settings}
-                            textStyle={theme.button.settingsText}
-                            title="Replace drill list randomly"
-                            onPress={generateRandomWordList}
-                          >
-                            <Ionicons name="add-sharp" size={32} color="gray" />
-                          </Button>
-                        </View>
-                      </>
-                    )}
-                  </>
-                )}
-              </View>
-            )}
-          </>
-        )}
+                          <Ionicons name="add-sharp" size={32} color="gray" />
+                        </Button>
+                      </View>
+                    </>
+                  )}
+                </>
+              )}
+            </View>
+          )}
+        </>
       </View>
     </View>
   );

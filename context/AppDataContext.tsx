@@ -1,5 +1,5 @@
 import useAppChecklist from "hooks/useAppChecklist";
-import useGetDictionary from "hooks/useGetDictionary";
+import useGetDictionary from "hooks/useDictionary";
 import useLoader from "hooks/useLoader";
 import useWordList from "hooks/useWordList";
 import React, { ReactNode, createContext, useContext } from "react";

@@ -168,6 +168,13 @@ const themeHelper = (themeFile: ITheme) => {
         paddingVertical: 10,
         borderRadius: 30,
       },
+      play: {
+        width: 20,
+        backgroundColor: "green",
+        margin: 0,
+        padding: 0,
+        height: 22,
+      },
       primaryText: {
         fontSize: 16,
         color: themeFile.colors.primaryButtonText,

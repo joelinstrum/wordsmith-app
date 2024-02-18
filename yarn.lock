@@ -3649,6 +3649,11 @@
     "invariant" "^2.2.4"
     "md5-file" "^3.2.3"
 
+"expo-av@^13.10.5":
+  "integrity" "sha512-w45oCoe+8PunDeM0rh/Ut6UaGh7OjEJOCjAiQy3nCxpA8FaXB17KaqpsvkAXIMvceHYWndH8+D29esUTS6wEsA=="
+  "resolved" "https://registry.npmjs.org/expo-av/-/expo-av-13.10.5.tgz"
+  "version" "13.10.5"
+
 "expo-constants@*", "expo-constants@~15.4.0", "expo-constants@~15.4.3", "expo-constants@~15.4.5":
   "integrity" "sha512-1pVVjwk733hbbIjtQcvUFCme540v4gFemdNlaxM2UXKbfRCOh2hzgKN5joHMOysoXQe736TTUrRj7UaZI5Yyhg=="
   "resolved" "https://registry.npmjs.org/expo-constants/-/expo-constants-15.4.5.tgz"
