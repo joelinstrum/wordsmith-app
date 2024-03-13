@@ -169,8 +169,8 @@ const themeHelper = (themeFile: ITheme) => {
         borderRadius: 30,
       },
       play: {
-        width: 20,
-        backgroundColor: "green",
+        width: 26,
+        backgroundColor: "orange",
         margin: 0,
         padding: 0,
         height: 22,
@@ -227,6 +227,8 @@ const themeHelper = (themeFile: ITheme) => {
         justifyItems: "center",
         borderRadius: 8,
         backgroundColor: themeFile.colors.primaryButtonBackground,
+        paddingLeft: 0,
+        marginLeft: 0,
       },
       replace: {
         display: "flex",

@@ -4,11 +4,13 @@ import { getStoredItem, setStoredItem } from "utils/utilities";
 
 const useSpeakOptions = () => {
   const [numberOfDrillWords, setNumberOfDrillWords] = useState(0);
+
   useEffect(() => {
     const getItems = async () => {
       const numberOfDrillWords = await getStoredItem(
         "@WordSmith:numberOfDrillItems"
       );
+      console.log(numberOfDrillWords);
       if (numberOfDrillWords) {
         setNumberOfDrillWords(parseInt(numberOfDrillWords));
       } else {

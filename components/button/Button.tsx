@@ -43,7 +43,7 @@ const Button: React.FC<IButton> = ({
             <Image source={icon} style={theme.button.icon} />
           </View>
         )}
-        <Text style={[theme.button.menuText, { marginRight: 10 }, textStyle]}>
+        <Text style={[theme.button.menuText, { marginRight: 0 }, textStyle]}>
           {title}
         </Text>
         {icon && iconPlacement === "right" && (

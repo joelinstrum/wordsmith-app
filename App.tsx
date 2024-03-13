@@ -1,6 +1,7 @@
 import { DarkTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppProvider from "context/AppProvider"; // Import the AppProvider
+import { useKeepAwake } from "expo-keep-awake";
 import React from "react";
 import {
   Home,
@@ -12,6 +13,7 @@ import {
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  useKeepAwake();
   return (
     <AppProvider>
       <NavigationContainer theme={DarkTheme}>

@@ -54,7 +54,7 @@ const Settings: React.FC = () => {
     storeNumberOfDrillWords(n.toString());
   };
 
-  const saveThemeToUse = (theme: string) => {
+  const saveThemeToUse = (theme: TTheme) => {
     setThemeToUse(theme);
     updateTheme(theme);
   };
