@@ -362,6 +362,14 @@ const themeHelper = (themeFile: ITheme) => {
         fontSize: 16,
       },
     },
+    inputText: {
+      color: themeFile.colors.inputText,
+      borderWidth: 1,
+      borderColor: themeFile.colors.inputOutline,
+      backgroundColor: themeFile.colors.inputBackground,
+      height: 40,
+      padding: 10,
+    },
   };
 };
 

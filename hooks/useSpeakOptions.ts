@@ -10,7 +10,6 @@ const useSpeakOptions = () => {
       const numberOfDrillWords = await getStoredItem(
         "@WordSmith:numberOfDrillItems"
       );
-      console.log(numberOfDrillWords);
       if (numberOfDrillWords) {
         setNumberOfDrillWords(parseInt(numberOfDrillWords));
       } else {

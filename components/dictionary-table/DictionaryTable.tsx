@@ -11,6 +11,7 @@ import { View } from "react-native";
 import { DataTable } from "react-native-paper";
 import { getStoredItem, setStoredItem } from "utils/utilities";
 import DictionaryItem from "./DictionaryItem";
+import DictionarySearch from "./DictionarySearch";
 
 const DictionaryTable = () => {
   const { theme } = useTheme();
@@ -32,9 +33,22 @@ const DictionaryTable = () => {
     numberOfItemsPerPageList[0]
   );
 
+  const [filteredDictionary, setFilteredDictionary] = useState(dictionary);
+
   const updateItemsPerPage = (itemsPerPage: number) => {
     onItemsPerPageChange(itemsPerPage);
     setStoredItem("@WordSmith:numberOfItemsPerPage", itemsPerPage.toString());
+  };
+
+  const filterByWord = (letters: string) => {
+    if (letters.length > 2) {
+      let foundWords = dictionary.filter((word) =>
+        word.word.toLowerCase().startsWith(letters)
+      );
+      setFilteredDictionary(foundWords);
+    } else {
+      setFilteredDictionary(dictionary);
+    }
   };
 
   useEffect(() => {
@@ -101,59 +115,62 @@ const DictionaryTable = () => {
   };
 
   const renderDictionaryTable = () => (
-    <DataTable>
-      <DataTable.Header style={theme.dataTable.header}>
-        <DataTable.Title
-          textStyle={theme.dataTable.headerText}
-          style={[
-            {
-              flex: 1,
-            },
-          ]}
-        >
-          +/-
-        </DataTable.Title>
-        <DataTable.Title
-          textStyle={theme.dataTable.headerText}
-          onPress={() => sortDictionary("word")}
-          numeric
-        >
-          Word
-        </DataTable.Title>
-        <DataTable.Title
-          textStyle={theme.dataTable.headerText}
-          onPress={() => sortDictionary("category")}
-          numeric
-          style={{ flex: 2 }}
-        >
-          Category
-        </DataTable.Title>
-      </DataTable.Header>
+    <>
+      <DictionarySearch onChange={filterByWord} />
+      <DataTable>
+        <DataTable.Header style={theme.dataTable.header}>
+          <DataTable.Title
+            textStyle={theme.dataTable.headerText}
+            style={[
+              {
+                flex: 1,
+              },
+            ]}
+          >
+            +/-
+          </DataTable.Title>
+          <DataTable.Title
+            textStyle={theme.dataTable.headerText}
+            onPress={() => sortDictionary("word")}
+            numeric
+          >
+            Word
+          </DataTable.Title>
+          <DataTable.Title
+            textStyle={theme.dataTable.headerText}
+            onPress={() => sortDictionary("category")}
+            numeric
+            style={{ flex: 2 }}
+          >
+            Category
+          </DataTable.Title>
+        </DataTable.Header>
 
-      {dictionary
-        .slice(from, to)
-        .map((item: IDictionary, index: number, array: IDictionary[]) => (
-          <DictionaryItem
-            item={item}
-            key={item.id}
-            onWordPress={pressWord}
-            index={index}
-          />
-        ))}
+        {filteredDictionary
+          .slice(from, to)
+          .map((item: IDictionary, index: number, array: IDictionary[]) => (
+            <DictionaryItem
+              item={item}
+              key={item.id}
+              onWordPress={pressWord}
+              index={index}
+            />
+          ))}
 
-      <DataTable.Pagination
-        page={page}
-        numberOfPages={Math.ceil(dictionary.length / itemsPerPage)}
-        onPageChange={(page) => setPage(page)}
-        label={`${from + 1}-${to} of ${dictionary.length}`}
-        numberOfItemsPerPageList={numberOfItemsPerPageList}
-        numberOfItemsPerPage={itemsPerPage}
-        onItemsPerPageChange={updateItemsPerPage}
-        showFastPaginationControls
-        selectPageDropdownLabel={"Rows per page"}
-        style={[{ backgroundColor: "#aaa" }]}
-      />
-    </DataTable>
+        <DataTable.Pagination
+          page={page}
+          numberOfPages={Math.ceil(dictionary.length / itemsPerPage)}
+          onPageChange={(page) => setPage(page)}
+          label={`${from + 1}-${to} of ${dictionary.length}`}
+          numberOfItemsPerPageList={numberOfItemsPerPageList}
+          numberOfItemsPerPage={itemsPerPage}
+          onItemsPerPageChange={updateItemsPerPage}
+          showFastPaginationControls
+          selectPageDropdownLabel={"Rows per page"}
+          style={[{ backgroundColor: "#aaa" }]}
+        />
+      </DataTable>
+    </>
   );
 
   return (

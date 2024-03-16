@@ -33,7 +33,7 @@
         "WRITE_EXTERNAL_STORAGE"
       ],
       "package": "com.joe44850.wordsmithapp",
-      "versionCode": 8
+      "versionCode": 9
     },
     "web": {
       "favicon": "./assets/images/WordsmithIcon.png"

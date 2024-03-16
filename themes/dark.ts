@@ -30,6 +30,10 @@ const darkTheme: ITheme = {
     tableHeaderBackground: "#444",
     tableHeaderFontColor: "#bbb",
     checkboxColor: "#127aa1",
+    inputOutline: "#fff",
+    inputBackground: "transparent",
+    inputText: "#fff",
+    inputPlaceholder: "#ccc",
   },
 };
 

@@ -32,6 +32,10 @@ declare interface ITheme {
     tableHeaderBackground: string;
     tableHeaderFontColor: string;
     checkboxColor: string;
+    inputOutline: string;
+    inputBackground: string;
+    inputText: string;
+    inputPlaceholder: string;
   };
 }
 
@@ -61,6 +65,7 @@ declare interface IDictionary {
   isKnown: string;
   pronunciation: string;
   [key: string]: string | number;
+  tts: string;
 }
 
 type TTheme = "Dark" | "Light";

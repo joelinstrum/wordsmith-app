@@ -64,7 +64,6 @@ export const newShade = (hexColor: string, magnitude: number) => {
     b < 0 && (b = 0);
     return `#${(g | (b << 8) | (r << 16)).toString(16)}`;
   } else {
-    console.log(hexColor);
     return hexColor;
   }
 };
@@ -84,7 +83,6 @@ const getMeaning = (inputString: string): string => {
 const getPronounciation = (inputString: string): string => {
   const match = inputString.match(/\((.*?)(?:,|$)/); // Match text between parentheses up to comma or end of string
   if (match) {
-    console.log("Match: ", match[1]);
     const textInsideParentheses = match[1].trim(); // Extract text between parentheses and trim whitespace
     const pronunciation = textInsideParentheses.split(":")[1]; // Split by colon and get second part
     if (pronunciation) {
@@ -111,7 +109,7 @@ const playWordMp3 = async (word: string) => {
 };
 
 const playWordNative = async (word: string) => {
-  await Speech.speak(word);
+  await Speech.speak("n(y)üˈgasətē");
   return true;
 };
 

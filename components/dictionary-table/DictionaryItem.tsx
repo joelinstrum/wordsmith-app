@@ -25,13 +25,16 @@ const DictionaryItem: React.FC<DictionaryItemProps> = ({
     updateWordList(item.word, item.id);
   };
 
-  const play = (word: string) => {
+  const play = (word: IDictionary) => {
+    playWordNative("Nugacity");
+    return;
     if (evenOdd === 0) {
       setEvenOdd(1);
-      playWordMp3(word);
+      playWordMp3(word.word);
     } else {
       setEvenOdd(0);
-      playWordNative(word);
+      const ttsWord = word.tts || word.word;
+      playWordNative(ttsWord);
     }
   };
 
@@ -47,7 +50,7 @@ const DictionaryItem: React.FC<DictionaryItemProps> = ({
         />
       </DataTable.Cell>
       <DataTable.Cell textStyle={theme.dataTable.rowText} style={{ flex: 1 }}>
-        <Button onPress={() => play(item.word)} style={theme.button.play}>
+        <Button onPress={() => play(item)} style={theme.button.play}>
           <Ionicons name="play" />
         </Button>
       </DataTable.Cell>
